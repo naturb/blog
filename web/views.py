@@ -1,20 +1,8 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 from .models import Post
 
-posts = [
-    {
-        'author': 'Natalia',
-        'title': 'The first blog post',
-        'content': 'First post content',
-        'date_posted': 'May 1, 2020'
-    },
-    {
-        'author': 'Anne Marie',
-        'title': 'The second blog post',
-        'content': 'Second post content',
-        'date_posted': 'May 2, 2020'
-    }
-]
+
 
 def home(request):
     context = {
@@ -22,5 +10,17 @@ def home(request):
     }
     return render(request, 'web/home.html', context)
 
+class PostListView(ListView):
+    model = Post
+    template_name = 'web/home.html'
+    context_object_name = 'posts'
+    ordering = ['-date_posted'] # newest on top
+
+class PostDetailView(DetailView):
+    model = Post
+
 def about(request):
     return render(request, 'web/about.html', {'title':'About'})
+
+def register(request):
+   return render(request, 'users/register.html', context)
